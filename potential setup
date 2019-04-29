@@ -1,0 +1,89 @@
+/*
+
+ */
+package memorymanager;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Timer;
+import java.util.Scanner;
+
+/**
+ *
+ * @author cayce
+ */
+public class memorymanager {
+    int lifeMem;
+    Timer myTimer = new Timer();
+    Queue<Integer> theProcesses = new LinkedList<>();
+    
+    
+    public class processQueue{
+        public int processNum;
+        public int processStartT;
+        public int processLife;
+        public int numMemFiles;
+        public int memSize;
+        public int memSize2;
+        
+        //buffered reader
+        //ask for number of processes
+        //assign number of processes to variable i;
+        //loop up tp variable i, scanning all objects
+        //once finished, rearrange the processes to ensure starting times are in order
+        //if starting times are equal, make process name that's smaller first
+        //
+    }
+   
+    
+    public static void main(String[] args) {
+       
+        boolean[] memArray;
+        //buffered reader :
+        //ask where file location is
+        //first number read in is how many processes
+        //next: loop to load up queue
+        System.out.print("Memory size: ");
+        Scanner in = new Scanner(System.in);
+        int userNum = in.nextInt();
+        memArray = new boolean[userNum];
+        Arrays.fill(memArray, Boolean.FALSE);
+        for(int i = 0;i<userNum;i++){
+            System.out.println(memArray[i]);
+        }
+        System.out.print("Memory management policy(1- VSP, 2- PAG, 3- SEG): ");
+        userNum = in.nextInt();
+        switch(userNum){
+            case 1:
+                System.out.print("Fit algorithm (1- first-fit, 2- best fit, 3- worst-fit): ");
+                userNum = in.nextInt();
+                switch(userNum){
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+                break;
+            case 2:
+                System.out.println("Page/frame size: ");
+                break;
+            case 3:
+                System.out.println("Fit algorithm (1- first-fit, 2- best fit, 3- worst-fit):  ");
+                userNum = in.nextInt();
+                switch(userNum){
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+                break;
+        }
+
+    }
+    
+}
