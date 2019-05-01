@@ -2,35 +2,44 @@ package cpp_cs1;
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class UserInterface {
-	
+
 	private MemoryManagementUnit mmu;
 	Scanner scan;
-	
+
 	public UserInterface() {
 		mmu = new MemoryManagementUnit();
 	}
-	
+
 	public void startMenu() {
-		BufferedReader br;
+		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();
 		String []fileContent = null;
-		
+
 		try {
 			String line;
-			br = new BufferedReader(new FileReader("in1.dat"));	
+			//change the filename each time different file is used for input.
+			//specify path if input file is not in the same directory.
+			br = new BufferedReader(new FileReader("sIn.dat"));	
 			while( ( line = br.readLine() )!= null ) {
-				sb.append(line+" ");
+				sb.append(line+"\n");
 			}
-			fileContent = (sb.toString().split("\\s+"));
+			fileContent = (sb.toString().split("\\r?\\n"));
+			makeProcess(fileContent);
 		}
-		catch(IOException e){
-			e.printStackTrace();
+		catch(Exception e){
+			System.out.println(e.getMessage());
 		}
-		
-		//mmu.createProcesses(fileContent);	
+		try {
+			br.close();
+		}
+		catch(Exception e) {
+		}
+	}
+
+	public void makeProcess(String[]fileContent) {
+		mmu.createProcesses(fileContent);	
 		scan = new Scanner(System.in); 
 		System.out.println("Enter the size of memory");
 		int size = scan.nextInt();
@@ -38,22 +47,22 @@ public class UserInterface {
 		int input = getMemoryManagementPolicy();
 		int parameter;
 		switch(input) {
-			case 1:
-				parameter = getPolicyParameter();
-				break;
-			case 2:
-				int pageSize = getPageSize();
-				mmu.createPages(pageSize);
-				int frameSize = getPageFrameSize();
-				mmu.createPageFrame(pageSize, frameSize);
-				mmu.printPage();
-				break;
-			case 3:
-				parameter = getPolicyParameter();
-				break;
+		case 1:
+			parameter = getPolicyParameter();
+			break;
+		case 2:
+			int pageSize = getPageSize();
+			mmu.createPages(pageSize);
+			int frameSize = getPageFrameSize();
+			mmu.createPageFrame(pageSize, frameSize);
+			mmu.printPage();
+			break;
+		case 3:
+			parameter = getPolicyParameter();
+			break;
 		}
 	}
-	
+
 	public int getMemoryManagementPolicy(){
 		System.out.println("Enter the Memory Management Policy");
 		System.out.println("VSP(1)");
@@ -61,7 +70,7 @@ public class UserInterface {
 		System.out.println("SEG(3)");
 		return  scan.nextInt();
 	}
-	
+
 	public int getPolicyParameter() {
 		System.out.println("Enter the Policy Parameter");
 		System.out.println("First-Fit(1)");
