@@ -21,7 +21,7 @@ public class UserInterface {
 			String line;
 			//change the filename each time different file is used for input.
 			//specify path if input file is not in the same directory.
-			br = new BufferedReader(new FileReader("sIn.dat"));	
+			br = new BufferedReader(new FileReader("in1.dat"));	 // OG sIn.dat
 			while( ( line = br.readLine() )!= null ) {
 				sb.append(line+"\n");
 			}
@@ -79,11 +79,11 @@ public class UserInterface {
 		return scan.nextInt();
 	}
 	public int getPageFrameSize() {
-		System.out.println("Enter the page frame size");
+		System.out.print("Enter the page frame size: ");
 		return scan.nextInt();
 	}
 	public int getPageSize() {
-		System.out.println("Enter the page size");
+		System.out.print("Enter the page size: ");
 		return scan.nextInt();
 	}
 }
