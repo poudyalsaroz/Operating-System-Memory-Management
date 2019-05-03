@@ -7,6 +7,14 @@ public class Process {
 	private int lifeTime;
 	private int addressSpace;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param a
+	 * @param arrTime
+	 * @param lifTime
+	 * @param aSpace
+	 */
 	public Process( int a, int arrTime, int lifTime, int aSpace) {
 		id = a;
 		arrivalTime = arrTime;
@@ -14,6 +22,14 @@ public class Process {
 		addressSpace = aSpace;
 	}
 	
+	public Process() {
+		
+	}
+	
+	/**
+	 * getters for values provided above
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}

@@ -39,16 +39,19 @@ public class UserInterface {
 	}
 
 	public void makeProcess(String[]fileContent) {
-		mmu.createProcesses(fileContent);	
+		mmu.createProcesses(fileContent); // reads contents of file in array and sends to this function
+		
 		scan = new Scanner(System.in); 
-		System.out.println("Enter the size of memory");
+		System.out.print("Enter the size of memory: ");
 		int size = scan.nextInt();
 		mmu.createMemory(size);
-		int input = getMemoryManagementPolicy();
+		int input = getMemoryManagementPolicy(); 
 		int parameter;
 		switch(input) {
 		case 1:
 			parameter = getPolicyParameter();
+			VSP newVSP = new VSP(parameter, mmu.createProcessess(fileContent));
+			newVSP.startVSP(parameter);
 			break;
 		case 2:
 			int pageSize = getPageSize();
@@ -64,18 +67,24 @@ public class UserInterface {
 	}
 
 	public int getMemoryManagementPolicy(){
-		System.out.println("Enter the Memory Management Policy");
+		System.out.println("Enter the Memory Management Policy:");
 		System.out.println("VSP(1)");
 		System.out.println("PAG(2)");
 		System.out.println("SEG(3)");
+		System.out.print(">> ");
 		return  scan.nextInt();
 	}
 
+	/**
+	 * This is for VSP (Variable Size Partitioning)
+	 * @return
+	 */
 	public int getPolicyParameter() {
-		System.out.println("Enter the Policy Parameter");
+		System.out.println("Enter the Policy Parameter: ");
 		System.out.println("First-Fit(1)");
 		System.out.println("Best-Fit(2)");
 		System.out.println("Worst-Fit(3)");
+		System.out.print(">> ");
 		return scan.nextInt();
 	}
 	public int getPageFrameSize() {
