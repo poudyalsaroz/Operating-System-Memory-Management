@@ -50,7 +50,8 @@ public class UserInterface {
 		switch(input) {
 		case 1:
 			parameter = getPolicyParameter();
-			VSP newVSP = new VSP(parameter, mmu.createProcessess(fileContent));
+			// parameter = first, best, worst fit | returns the array object of text file
+			VSP newVSP = new VSP(parameter, mmu.createProcessess(fileContent), mmu.createMemories(size)); 
 			newVSP.startVSP(parameter);
 			break;
 		case 2:

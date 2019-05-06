@@ -5,12 +5,32 @@ public class MemoryManagementUnit {
 	private Memory memory[];
 	private Page page[];
 	private Process process[];
+	
+	// for testing purposes, 
+	private int[] memories;
 
 	public void createMemory(int size) {
 		memory = new Memory[size];
 		for(int i = 0; i < size; i++) {
 			memory[i] = new Memory(i,true);
 		}
+	}
+	
+	/**
+	 * creates the memory manager with default value of zero
+	 * will return the array back to UI to be sent to VSP class
+	 * 
+	 * @param size
+	 * @return
+	 */
+	public int[] createMemories(int size) {
+		memories = new int[size];
+		
+		// instantiates memory manager with default values of zero
+		for(int i = 0; i < size; i++) {
+			memories[i] = 0;
+		}
+		return memories;
 	}
 
 	public void createPages(int pageSize) {
@@ -73,6 +93,7 @@ public class MemoryManagementUnit {
 	/**
 	 * for testing purposes
 	 * trying to send process object to VSP so I can begin working on this part of the project
+	 * returns the text file objects
 	 * 
 	 * @param processData
 	 * @return
