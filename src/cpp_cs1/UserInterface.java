@@ -21,7 +21,7 @@ public class UserInterface {
 			String line;
 			//change the filename each time different file is used for input.
 			//specify path if input file is not in the same directory.
-			br = new BufferedReader(new FileReader("sIn.dat"));	
+			br = new BufferedReader(new FileReader("in2.dat"));	
 			while( ( line = br.readLine() )!= null ) {
 				sb.append(line+"\n");
 			}
@@ -39,6 +39,7 @@ public class UserInterface {
 	}
 
 	public void makeProcess(String[]fileContent) {
+		
 		mmu.createProcesses(fileContent);	
 		scan = new Scanner(System.in); 
 		System.out.println("Enter the size of memory");
@@ -55,7 +56,8 @@ public class UserInterface {
 			mmu.createPages(pageSize);
 			int frameSize = getPageFrameSize();
 			mmu.createPageFrame(pageSize, frameSize);
-			mmu.printPage();
+			//mmu.printPage();
+			mmu.createVirtualTime();
 			break;
 		case 3:
 			parameter = getPolicyParameter();
