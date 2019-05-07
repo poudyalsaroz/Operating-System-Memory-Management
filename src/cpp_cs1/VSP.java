@@ -3,7 +3,11 @@
  */
 package cpp_cs1;
 
+import java.util.HashMap;
+//import java.util.Dictionary;
+//import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -32,8 +36,13 @@ public class VSP {
 	// will keep track of queues entering the 
 	Queue<Integer> inputQueue;
 	
-	int idMemory;
-	int occurrences;
+//	Dictionary<Integer, Integer> processTime;
+	Map<Integer, Integer> processTime;
+	
+	
+	// keeps track of the process that will go into the memory
+//	int idMemory;
+//	int occurrences;
 	
 	final int MAX_TIME = 100000;
 	
@@ -56,24 +65,27 @@ public class VSP {
 		memories = new int[memory.length];
 		for(int i = 0; i < memory.length; i++) {
 			memories[i] = memory[i];
-//			memories[i] = 0;
 		}
 		
+		// keeps track of number of processes that will go through the memory
 		currentProcess = 0;
 		
+		// sets the virtual time to zero
 		virtualTime = 0;
+		
+		// instantiates a new queue for processes to go to
 		inputQueue = new LinkedList<Integer>();
+		
+		// will keep track of the total time process will be in memory
+		processTime = new HashMap<Integer, Integer>();
 	}
 	
 	/**
 	 * will start performing VSP on data processes provided
 	 */
 	public void startVSP(int policyParameter){
-		int first = 0;
-		int last = 0;
-		int sizeArray = memories.length;
+
 		
-		System.out.println();
 		
 		firstFit(processes, memories);
 	}
@@ -86,22 +98,23 @@ public class VSP {
 		
 		boolean loop = true;
 //		while(loop) {
-		for(int i = 0; i < 3; i++) { // testing purposes
+		for(int i = 0; i < 1005; i++) { // TESTING PURPOSES
+			
 			// compares virtual time with arrival time of process
 			// if true, then enters queue to be entered
 			if(virtualTime == process[currentProcess].getArrivalTime()) {
-				System.out.println("t=" + virtualTime);
+				System.out.println("\nt=" + virtualTime);
 				
 				inputQueue.add(process[currentProcess].getId()); // adds process id to queue
 				currentProcess++; // increments process to next available processor
 				processArrival(currentProcess, inputQueue); // prints process to terminal
 				
-				// checks second process to see if there are same arrival times to add to queue
+				// CHECKS IF THERE IS A SECOND PROCESS ARRIVING AT SAME TIME
 				if(virtualTime == process[currentProcess].getArrivalTime()) {
 					inputQueue.add(process[currentProcess].getId());
 					currentProcess++;
 					
-					processArrival(currentProcess, inputQueue);
+					processArrival(currentProcess, inputQueue); // prints arrival time
 				}
 			}
 			
@@ -109,9 +122,16 @@ public class VSP {
 			// if not then moves to memory manager
 			// and prints to terminal
 			if(!inputQueue.isEmpty()) {
-				movingProcess(currentProcess, inputQueue, process, memories);
+//				movingProcess(currentProcess, inputQueue, process, memories);
+				movingProcess(inputQueue, process, memory); // memories
+				
 			} 
 			
+			// checks if a process has been completed
+			// check dictionary, if process has been completed
+			if(processTime.containsKey(virtualTime)) {
+				removingProcess(memory, virtualTime);
+			}
 			
 			// exits loop once all processes are completed
 			if(currentProcess == totalProcess) {
@@ -130,8 +150,48 @@ public class VSP {
 		
 	}
 	
-	public void movingProcess(int currentProcess, Queue<Integer> inputQueue, Process[] process, int[] memoriess) {
-//		int idMemory;
+	/**
+	 * will remove the process from the memory manager once the time 
+	 * has been fulfilled by the process
+	 */
+	public void removingProcess(int[] memory, int virtualTime) {
+		// will store the id number of the process
+		// of the id that will be removed from memory
+		int idNumber = 0;
+		
+		// prints out the statement to terminal of the process that is completed
+		System.out.println("t=" + virtualTime);
+		System.out.println("\tProcess " + processTime.get(virtualTime) + " completes");
+		
+		idNumber = processTime.get(virtualTime);
+		
+		// set the value of the id number to zero so it can be empty again
+		for(int i = 0; i < memory.length; i++) {
+			if(memory[i] == (idNumber - 1)) {
+				memory[i] = 0;
+			}
+		}
+		
+		// call the updated memory map
+		// when the process has finished running
+		memoryManagerPrint(memory);
+	}
+	
+	/**
+	 * will move the process into the the memory manager
+	 * it will move from the queue into the memory manager
+	 * and print to terminal
+	 * 
+	 * @param inputQueue
+	 * @param process
+	 * @param memoriess
+	 */
+	public void movingProcess(Queue<Integer> inputQueue, Process[] process, int[] memoriess) {
+		// keeps track of the current process that is inside the queue
+		int idMemory;
+		
+		// will find the first available free position in memory so that the process can move into
+		int occurrences;
 		
 		// stores value of id before getting removed from queue for local reference
 		idMemory = inputQueue.peek();
@@ -139,33 +199,32 @@ public class VSP {
 		System.out.println("MM moves Process " + idMemory + " to memory");
 		idMemory = inputQueue.peek();
 		
+		// will remove id from queue into the memory manager
 		inputQueue.remove();
 		
 		System.out.println("Input Queue: " + inputQueue);
 		
+		// looks for empty spaces in memory and adds it to next available location[
 		occurrences = firstOccurrence(memories, memories.length, 0);
 		
 		// process address space it takes up
-//		System.out.println("space it takes up for process" + idMemory + ": " + process[idMemory].getAddressSpace());
-		// 
 		for(int i = occurrences; i < process[idMemory - 1].getAddressSpace() + occurrences; i++) {
 			memories[i] = idMemory;
 		}
 		
+		// adds the time of virtual time and process to be referenced when it is time to leave memory
+		// for the map
+		processTime.put((process[idMemory - 1].getLifeTime() + virtualTime), (idMemory - 1));
+		
+		// prints out the contents of the memory manager
 		memoryManagerPrint(memoriess);
-		
-//		System.out.println("Memory Map: ");
-//		// need to move the memory map testing to other values because local values will be purged once exiting this function
-//		System.out.println("\t" + firstOccurrence(memories, memories.length, idMemory) + "-" + lastOccurrence(memories, memories.length, idMemory) + ": Process " + idMemory); 
-//		System.out.println("\t" + firstOccurrence(memories, memories.length, 0) + "-" + lastOccurrence(memories, memories.length, 0) + ": Hole");
-		
-		
 		
 	}
 	
 	
 	/**
-	 * will format the memory manager 
+	 * keeps track of all the processes in the memory manager array
+	 * will also print out the current processes currently in the memory manager
 	 */
 	public void memoryManagerPrint(int[] memory) {
 		System.out.println("Memory Map: ");
@@ -188,8 +247,8 @@ public class VSP {
 				loop = false;
 			}
 			while(loop) {
-				if((processValue == memory[i]) && (i < memory.length - 1)) {
-					++i;
+				if((processValue == memory[i]) && (i < memory.length - 1)) { // - 1
+					i++;
 				} 
 				else {
 					i--;
@@ -197,16 +256,16 @@ public class VSP {
 					loop = false;
 				}
 			}
-			System.out.println("\t" + startIndex + "-" + endIndex + ": Process " + processValue);
 			
-			
+			// if process in array is 0, then it is considered "empty" and
+			// will be called a hole for printing purposes
+			if(processValue == 0) {
+				System.out.println("\t" + startIndex + "-" + endIndex + ": Hole ");
+			} else {
+				System.out.println("\t" + startIndex + "-" + endIndex + ": Process " + processValue);
+			}
 			
 		}
-		
-		// need to move the memory map testing to other values because local values will be purged once exiting this function
-		//System.out.println("\t" + firstOccurrence(memories, memories.length, idMemory) + "-" + lastOccurrence(memories, memories.length, idMemory) + ": Process " + idMemory); 
-		//System.out.println("\t" + firstOccurrence(memories, memories.length, 0) + "-" + lastOccurrence(memories, memories.length, 0) + ": Hole");
-		
 		
 	}
 	/**
