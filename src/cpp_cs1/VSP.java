@@ -4,8 +4,6 @@
 package cpp_cs1;
 
 import java.util.HashMap;
-//import java.util.Dictionary;
-//import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -35,14 +33,9 @@ public class VSP {
 	
 	// will keep track of queues entering the 
 	Queue<Integer> inputQueue;
-	
-//	Dictionary<Integer, Integer> processTime;
+
+	// keeps track of process time in memory
 	Map<Integer, Integer> processTime;
-	
-	
-	// keeps track of the process that will go into the memory
-//	int idMemory;
-//	int occurrences;
 	
 	final int MAX_TIME = 100000;
 	
@@ -78,6 +71,7 @@ public class VSP {
 		
 		// will keep track of the total time process will be in memory
 		processTime = new HashMap<Integer, Integer>();
+		
 	}
 	
 	/**
@@ -85,15 +79,12 @@ public class VSP {
 	 */
 	public void startVSP(int policyParameter){
 
-		
-		
 		firstFit(processes, memories);
 	}
 	
 	public void firstFit(Process[] process, int[] memory) {
 		// currentProcess = increments as processes go through memory
 		// inputQueue processes IDs that go into memory
-		
 		totalProcess = process.length - 1;
 		
 		boolean loop = true;
@@ -163,7 +154,9 @@ public class VSP {
 		System.out.println("t=" + virtualTime);
 		System.out.println("\tProcess " + processTime.get(virtualTime) + " completes");
 		
-		idNumber = processTime.get(virtualTime);
+		// map key looking for the value
+		idNumber = processTime.get(virtualTime); 
+		
 		
 		// set the value of the id number to zero so it can be empty again
 		for(int i = 0; i < memory.length; i++) {
@@ -236,7 +229,6 @@ public class VSP {
 		
 		int processValue = 0;
 		
-//		System.out.println("array length: " + memory.length);
 		
 		for(int i = 0; i < memory.length; i++) {
 			loop = true;
