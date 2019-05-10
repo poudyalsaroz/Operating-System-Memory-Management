@@ -21,7 +21,7 @@ public class UserInterface {
 			String line;
 			//change the filename each time different file is used for input.
 			//specify path if input file is not in the same directory.
-			br = new BufferedReader(new FileReader("in2.dat"));	
+			br = new BufferedReader(new FileReader("C:\\Users\\cayce\\OneDrive\\Documents\\NetBeansProjects\\cpp_cs1\\src\\cpp_cs1\\in1.dat"));	
 			while( ( line = br.readLine() )!= null ) {
 				sb.append(line+"\n");
 			}
@@ -45,6 +45,8 @@ public class UserInterface {
 		System.out.println("Enter the size of memory");
 		int size = scan.nextInt();
 		mmu.createMemory(size);
+                mmu.createArrayOfZero(size);
+                mmu.createTestArray(size);
 		int input = getMemoryManagementPolicy();
 		int parameter;
 		switch(input) {
@@ -61,6 +63,19 @@ public class UserInterface {
 			break;
 		case 3:
 			parameter = getPolicyParameter();
+                        mmu.createVirtualTime();
+                        if(parameter == 1){
+                            mmu.SegmentFirstFit();
+                            break;
+                        }
+                        if(parameter == 2){
+                            mmu.SegmentFirstFit();
+                            break;
+                        }
+                        if(parameter == 3){
+                            mmu.SegmentFirstFit();
+                            break;
+                        }
 			break;
 		}
 	}

@@ -6,8 +6,8 @@ public class Process {
 	private int arrivalTime;
 	private int lifeTime;
 	private int segment;
-	private int addressSpace;
 	private int [] segBlock;
+        private int segmentBlock;
 	
 	public Process( int a, int arrTime, int lifTime, int[] sArray, int seg) {
 		id = a;
@@ -33,8 +33,8 @@ public class Process {
 		return segment;
 	}
 	
-	public int[] getsegSpace() {
-		return segBlock;
+	public int getsegSpace() {
+		return segmentBlock; //changed this
 	}
 	
 	public int getAddressSpace() {
